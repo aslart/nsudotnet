@@ -12,7 +12,7 @@ namespace ParserProgram
     {
         static void Main(string[] args)
         {
-            string patch = @"C:\Users\USer\ParserProgram\ParserProgram\ParserProgram";
+            string patch = @"C:\Users\USer\LinesCounter\PLinesCounter\LinesCounter";
             Console.Write("Enter format: ");
             string format = Console.ReadLine();
             Console.WriteLine("Search ." + format + " files..");
