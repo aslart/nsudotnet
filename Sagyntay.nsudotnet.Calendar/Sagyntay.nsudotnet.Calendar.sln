@@ -1,0 +1,22 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sagyntay.nsudotnet.Calendar", "Sagyntay.nsudotnet.Calendar\Sagyntay.nsudotnet.Calendar.csproj", "{7F32BC2B-212C-47F1-AD26-7BFF509C3E35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F32BC2B-212C-47F1-AD26-7BFF509C3E35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F32BC2B-212C-47F1-AD26-7BFF509C3E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F32BC2B-212C-47F1-AD26-7BFF509C3E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F32BC2B-212C-47F1-AD26-7BFF509C3E35}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
