@@ -1,57 +1,116 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.IO;
+
+
 
 namespace Sagyntay.nsudotnet.LinesCounter
 {
-    class Program
+    class LineCounter
     {
-        static void Main(string[] args)
+        private const string _extension = "*.cs";
+        private const string _lineComment = "//";
+        private const string _startComment = "/*";
+        private const string _endComment = "*/";
+
+        private static int CountPerDirectory(string directoryName, string fileExtension)
         {
-            Console.WriteLine("Search .cs files..");
+            int localCount = 0;
+            DirectoryInfo directoryInfo = new DirectoryInfo(directoryName);
+            string extension = fileExtension == null ? _extension : fileExtension;
+            FileInfo[] files = directoryInfo.GetFiles(extension);
 
-            string patch = @"C:\Users\USer\Documents\Visual Studio 2013\Projects\Sagyntay.nsudotnet.LinesCounter";
-            var dir = new DirectoryInfo(patch);// папка с файлами 
-            var files = new List<string>(); // список для имен файлов 
+            DirectoryInfo[] directories = directoryInfo.GetDirectories();
 
-            foreach (FileInfo file in dir.GetFiles("*.cs")) // извлекаем все файлы и кидаем их в список 
+            Console.WriteLine("Traversing " + directoryName);
+            foreach (FileInfo file in files)
             {
-                files.Add(file.FullName); // получаем полный путь к файлу и кидаем его в список 
-                Console.WriteLine(file.FullName);
+                localCount += CountPerFile(file.FullName);
             }
-
-            Console.WriteLine("Found: " + dir.GetFiles("*.cs").Count());
-
-
-            for (int i = 0; i < dir.GetFiles("*.cs").Count(); i++)
+            foreach (DirectoryInfo directory in directories)
             {
-                string[] text = File.ReadAllLines(files[i]);
+                localCount += CountPerDirectory(directory.FullName, extension);
+            }
+            return localCount;
+        }
 
-                int stringCount = 0;
-
-
-                for (int j = 0; j < text.Length; j++)
+        private static int CountPerFile(string fileName)
+        {
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                int lineCount = 0;
+                bool commentActive = false;
+                string line;
+                Console.Write("Counting in " + fileName + ".. ");
+                while ((line = reader.ReadLine()) != null)
                 {
-                    if (string.IsNullOrWhiteSpace(text[i]))
+                    int lineComment = line.IndexOf(_lineComment);
+                    if (lineComment >= 0)
                     {
-                        continue;
+                        line = line.Substring(0, lineComment);
+                    }
+                    if (!commentActive)
+                    {
+                        int startCommentPosition = line.IndexOf(_startComment);
+                        if (startCommentPosition >= 0)
+                        {
+                            line = line.Substring(0, startCommentPosition);
+                            commentActive = true;
+                        }
+                    }
+                    else
+                    {
+                        int endCommentPosition = line.IndexOf(_endComment);
+                        if (endCommentPosition >= 0)
+                        {
+                            if (endCommentPosition + 1 < line.Length)
+                            {
+                                line = line.Substring(endCommentPosition + 1);
+                            }
+                            else
+                            {
+                                line = "";
+                            }
+                            commentActive = false;
+                        }
+                        else
+                        {
+                            line = "";
+                        }
                     }
 
-                    Regex rx = new Regex("([^//*]*[^/]*/|\\/\\/[^\\n]*)");
-                    if (rx.IsMatch(text[i]))
-                    {
-                        continue;
-                    }
+                    line = line.Trim();
 
-                    stringCount++;
+                    if (line.Length > 0)
+                    {
+                        lineCount++;
+                    }
                 }
-                Console.WriteLine("In file: " + files[i] + ": " + (stringCount));
+                Console.WriteLine(lineCount);
+                return lineCount;
             }
-            Console.ReadLine();
+        }
+
+        public static void Main(string[] args)
+        {
+            if (args.Length != 1)
+            {
+                Console.WriteLine("Please enter extension");
+
+                return;
+            }
+
+            string extension = args[0];
+            string currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine("We're starting from:" + currentDirectory);
+            int result = LineCounter.CountPerDirectory(currentDirectory, extension);
+            Console.WriteLine("Total line count:" + result);
+            //Console.ReadKey();
+          
+
+
         }
     }
 }
