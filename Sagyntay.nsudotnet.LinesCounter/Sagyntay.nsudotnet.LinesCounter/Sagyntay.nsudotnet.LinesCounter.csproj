@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B12F135-D79E-4539-8614-265D68DD411E}</ProjectGuid>
+    <ProjectGuid>{6A7D89AA-3E36-490C-9585-FED220FB2C84}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sagyntay.nsudotnet.LinesCounter</RootNamespace>
